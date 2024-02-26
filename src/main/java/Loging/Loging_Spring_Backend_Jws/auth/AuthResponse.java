@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// 5 - Agregamos las Anotaciones y Generamos las variables 
+
 @Data
 @Builder
 @AllArgsConstructor
