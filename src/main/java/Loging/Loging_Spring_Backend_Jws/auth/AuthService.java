@@ -5,6 +5,8 @@ import Loging.Loging_Spring_Backend_Jws.user.Role;
 import Loging.Loging_Spring_Backend_Jws.user.User;
 import Loging.Loging_Spring_Backend_Jws.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -16,6 +18,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+
     public AuthResponse login(LoginRequest request) {
         return null;
     }
@@ -23,9 +28,9 @@ public class AuthService {
     public AuthResponse register(RegisterRequest request) {
         User user = User.builder()
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode( request.getPassword()))
                 .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .lastname(request.lastname)
                 .country(request.getCountry())
                 .role(Role.USER)
                 .build();
@@ -33,7 +38,8 @@ public class AuthService {
         userRepository.save(user);
 
         return AuthResponse.builder()
-                .token(jwtService.getToken(user)) //pendiente crear la variable del token
+                .token(jwtService.getToken(user))
                 .build();
+
     }
 }
